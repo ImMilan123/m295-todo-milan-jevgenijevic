@@ -13,18 +13,20 @@ import java.util.stream.Collectors;
 
 @Component
 public class KeycloakRealmRoleConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
+
     @Override
     public Collection<GrantedAuthority> convert(Jwt jwt) {
         Map<String, Object> realmAccess = jwt.getClaim("realm_access");
 
-        if (realmAccess == null || realmAccess.isEmpty()) {
+        if (realmAccess == null || !realmAccess.containsKey("roles")) {
             return List.of();
         }
 
-        var roles = (List<String>) realmAccess.get("roles");
+        @SuppressWarnings("unchecked")
+        List<String> roles = (List<String>) realmAccess.get("roles");
 
         return roles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // 👈 Spring needs ROLE_ prefix
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // 🔥 Spring needs "ROLE_" prefix!
                 .collect(Collectors.toList());
     }
 }

@@ -22,4 +22,7 @@ public class Todo {
     private String description;
 
     private boolean completed;
+
+    public Todo(String testTitle, String testDescription, boolean b) {
+    }
 }
