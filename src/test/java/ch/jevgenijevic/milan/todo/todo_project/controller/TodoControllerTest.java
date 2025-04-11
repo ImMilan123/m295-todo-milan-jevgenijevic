@@ -53,7 +53,6 @@ public class TodoControllerTest {
     @Test
     @WithMockUser(roles = "user")
     void shouldFetchTodosSuccessfully() throws Exception {
-        // Pre-save a todo
         Todo todo = new Todo();
         todo.setTitle("Saved Task");
         todo.setDescription("Saved directly into repo");
